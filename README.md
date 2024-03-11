@@ -1,1 +1,1 @@
-# What-is-a-strain---Short-Read-Approach-approach
+# What-is-a-strain---Short-Read-Approach
