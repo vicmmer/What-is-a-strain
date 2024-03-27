@@ -21,7 +21,7 @@ def process_all_samples(base_dir='spades_assembly', fragment_size=500):
     for root, dirs, files in os.walk(base_dir):
         for dir_name in dirs:
             sample_folder_path = os.path.join(root, dir_name)
-            input_contigs_file = os.path.join(sample_folder_path, 'contigs.fasta')
+            input_contigs_file = os.path.join(sample_folder_path, 'filtered_contigs.fasta')
             if os.path.exists(input_contigs_file):
                 output_fragments_file = os.path.join(sample_folder_path, 'contig_fragments.fasta')
                 fragment_contigs(input_contigs_file, output_fragments_file, fragment_size=fragment_size)
