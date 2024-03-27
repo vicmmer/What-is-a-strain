@@ -193,7 +193,7 @@ testANI <- testANI[-1, ]
 colnames(testANI)[1] ="strain_loc1"
 
 testANI <- testANI %>% pivot_longer(-strain_loc1, names_to = "strain_loc2", values_to = "ANI")
-
+#calculates out emperical distribution probability looking to the left of the value
 testANI$ANI <- as.numeric(testANI$ANI)
 emp<-rep(0,nrow(testANI))
 for(i in 1:nrow(testANI))
