@@ -18,5 +18,11 @@ This script automates the retrieval of sequencing data from the NCBI Sequence Re
 ### spades.py 
 This script performs genome assembly using SPAdes for paired-end reads in FASTQ format. It iterates over each sample pair, counting read pairs before and after filtering, and logs this information. Afterwards,  it executes the filtering process for each sample dynamically by traversing through the spades_assembly folder and its subdirectories, and filtering out contigs shorter than 1,000 bp long, creating a new file within each subdirectory called "filtered_contigs.fasta" which will be used for further processing.
 
-### fragmenting.py
-This script loads the filtered contigs generated previously from the SPAdes assembly and processes them into smaller fragments. This is performed by using SeqIO.parse that will read the contigs for each sample directory. Then, it writes the contig fragments using SeqIO.write. The process all samples functions iterates over each sample directory in the base directory created from SPAdes.
+### subsample.py
+This script automates the process of subsampling paired-end FASTQ files, which are commonly used in next-generation sequencing data analysis. The script begins by locating the input FASTQ files and specifying an output directory for the subsampled files. It then iterates through pairs of input files and calculates the number of reads in the first file. Using random sampling, it selects 50 random indices within the range of reads in the first file. For each index, it extracts a subset of reads from both files in the pair using the seqtk sample command and writes these subsampled reads to new files in the output directory. This process is repeated for each pair of input files, providing a convenient and automated way to generate subsampled datasets for downstream analysis or testing purposes.
+
+
+
+
+
+
