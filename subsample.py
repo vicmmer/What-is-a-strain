@@ -3,8 +3,8 @@ import random
 import glob
 from subprocess import check_output
 
-path_in = '/home/group6/What-is-a-strain---Short-Read-Approach-approach/'
-path_out = '/home/group6/What-is-a-strain---Short-Read-Approach-approach/subsample_try/subsampling_output'
+path_in = os.getcwd()
+path_out = os.path.join(path_in, "subsampling_output")
 
 files = glob.glob(path_in + '*')
 a = [i for i in files if '.fastq' in i]
