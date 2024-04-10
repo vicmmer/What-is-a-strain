@@ -30,7 +30,7 @@ while fi < len(a) - 1:
     x = wc(file1)
     number_reads = int(x/4)
     random.seed(1)
-    randomList = random.sample(range(0, number_reads), 50)
+    randomList = random.sample(range(0, number_reads), 10)
     counter = 1
     lpath = len(path_in)
 
