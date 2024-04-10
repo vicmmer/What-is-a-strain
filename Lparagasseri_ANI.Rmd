@@ -1,5 +1,5 @@
 ---
-title: "Lparagasseri_ANI"
+title: "Lcrispatus_summary.RMD"
 author: "Leah Boger"
 date: "`r Sys.Date()`"
 output: html_document
@@ -9,111 +9,28 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
-library(readr)
-#read in all the data
-lparagasseri4 <- readr::read_tsv("/Users/leahboger/Desktop/Lparagasseri_ANI/4892_3209_4_ANI.tsv", col_names = FALSE)
-lparagasseri4ANI <- data.frame(lparagasseri4)
-lparagasseri4ANI <- lparagasseri4ANI[,3]
+# Define directory path
+ani_directory <- "/Users/leahboger/Desktop/Lgasseri_ANI/"
 
-lparagasseri6 <- readr::read_tsv("/Users/leahboger/Desktop/Lparagasseri_ANI/4933_3209_6_ANI.tsv", col_names = FALSE)
-lparagasseri6ANI <- data.frame(lparagasseri6)
-lparagasseri6ANI <- lparagasseri6ANI[,3]
+# Define filenames (Still working out how we can implement this aspect into python)
+file_names <- c(""))
 
-lparagasseri7 <- readr::read_tsv("/Users/leahboger/Desktop/Lparagasseri_ANI/4898_3209_7_ANI.tsv", col_names = FALSE)
-lparagasseri7ANI <- data.frame(lparagasseri7)
-lparagasseri7ANI <- lparagasseri7ANI[,3]
+# Read and process ANI files
+ani_data <- list()
+for (file_name in file_names) {
+  file_path <- paste0(ani_directory, file_name)
+  ani <- readr::read_tsv(file_path, col_names = FALSE)
+  ani_data[[file_name]] <- data.frame(ani[, 3])
+}
 
-lparagasseri15 <- readr::read_tsv("/Users/leahboger/Desktop/Lparagasseri_ANI/3559_15_ANI.tsv", col_names = FALSE)
-lparagasseri15ANI <- data.frame(lparagasseri15)
-lparagasseri15ANI <- lparagasseri15ANI[,3]
+# Calculate lengths of ANI vectors
+ani_lengths <- sapply(ani_data, length)
 
-lparagasseri17 <- readr::read_tsv("/Users/leahboger/Desktop/Lparagasseri_ANI/3559_17_ANI.tsv", col_names = FALSE)
-lparagasseri17ANI <- data.frame(lparagasseri17)
-lparagasseri17ANI <- lparagasseri17ANI[,3]
+# Combine ANI vectors into a single vector
+y <- unlist(ani_data)
 
-lparagasseri23 <- readr::read_tsv("/Users/leahboger/Desktop/Lparagasseri_ANI/3513_23_ANI.tsv", col_names = FALSE)
-lparagasseri23ANI <- data.frame(lparagasseri23)
-lparagasseri23ANI <- lparagasseri23ANI[,3]
-
-lparagasseri27 <- readr::read_tsv("/Users/leahboger/Desktop/Lparagasseri_ANI/3513_27_ANI.tsv", col_names = FALSE)
-lparagasseri27ANI <- data.frame(lparagasseri27)
-lparagasseri27ANI <- lparagasseri27ANI[,3]
-
-lparagasseri28 <- readr::read_tsv("/Users/leahboger/Desktop/Lparagasseri_ANI/3513_28_ANI.tsv", col_names = FALSE)
-lparagasseri28ANI <- data.frame(lparagasseri28)
-lparagasseri28ANI <- lparagasseri28ANI[,3]
-
-
-lparagasseri3513_31 <- readr::read_tsv("/Users/leahboger/Desktop/Lparagasseri_ANI/3513_31_ANI.tsv", col_names = FALSE)
-lparagasseri3513_31ANI <- data.frame(lparagasseri3513_31)
-lparagasseri3513_31ANI <- lparagasseri3513_31ANI[,3]
-
-lparagasseri3559_31 <- readr::read_tsv("/Users/leahboger/Desktop/Lparagasseri_ANI/3559_31_ANI.tsv", col_names = FALSE)
-lparagasseri3559_31ANI <- data.frame(lparagasseri3559_31)
-lparagasseri3559_31ANI <- lparagasseri3559_31ANI[,3]
-
-
-lparagasseri32 <- readr::read_tsv("/Users/leahboger/Desktop/Lparagasseri_ANI/3513_32_ANI.tsv", col_names = FALSE)
-lparagasseri32ANI <- data.frame(lparagasseri32)
-lparagasseri32ANI <- lparagasseri32ANI[,3]
-
-lparagasseri33 <- readr::read_tsv("/Users/leahboger/Desktop/Lparagasseri_ANI/3513_33_ANI.tsv", col_names = FALSE)
-lparagasseri33ANI <- data.frame(lparagasseri33)
-lparagasseri33ANI <- lparagasseri33ANI[,3]
-
-lparagasseri34 <- readr::read_tsv("/Users/leahboger/Desktop/Lparagasseri_ANI/3513_34_ANI.tsv", col_names = FALSE)
-lparagasseri34ANI <- data.frame(lparagasseri34)
-lparagasseri34ANI <- lparagasseri34ANI[,3]
-
-
-lparagasseri50 <- readr::read_tsv("/Users/leahboger/Desktop/Lparagasseri_ANI/3329_50_ANI.tsv", col_names = FALSE)
-lparagasseri50ANI <- data.frame(lparagasseri50)
-lparagasseri50ANI <- lparagasseri50ANI[,3]
-
-lparagasseri51 <- readr::read_tsv("/Users/leahboger/Desktop/Lparagasseri_ANI/3329_51_ANI.tsv", col_names = FALSE)
-lparagasseri51ANI <- data.frame(lparagasseri51)
-lparagasseri51ANI <- lparagasseri51ANI[,3]
-
-lparagasseri52 <- readr::read_tsv("/Users/leahboger/Desktop/Lparagasseri_ANI/3329_52_ANI.tsv", col_names = FALSE)
-lparagasseri52ANI <- data.frame(lparagasseri52)
-lparagasseri52ANI <- lparagasseri52ANI[,3]
-
-lparagasseri55 <- readr::read_tsv("/Users/leahboger/Desktop/Lparagasseri_ANI/3329_55_ANI.tsv", col_names = FALSE)
-lparagasseri55ANI <- data.frame(lparagasseri55)
-lparagasseri55ANI <- lparagasseri55ANI[,3]
-
-lparagasseri57 <- readr::read_tsv("/Users/leahboger/Desktop/Lparagasseri_ANI/3329_57_ANI.tsv", col_names = FALSE)
-lparagasseri57ANI <- data.frame(lparagasseri57)
-lparagasseri57ANI <- lparagasseri57ANI[,3]
-
-
-length(lparagasseri57ANI)
-length(lparagasseri55ANI)
-length(lparagasseri52ANI)
-length(lparagasseri51ANI)
-length(lparagasseri50ANI)
-length(lparagasseri34ANI)
-length(lparagasseri33ANI)
-length(lparagasseri32ANI)
-length(lparagasseri3513_31ANI)
-length(lparagasseri3559_31ANI)
-length(lparagasseri28ANI)
-length(lparagasseri27ANI)
-length(lparagasseri23ANI)
-length(lparagasseri17ANI)
-length(lparagasseri15ANI)
-length(lparagasseri7ANI)
-length(lparagasseri6ANI)
-length(lparagasseri4ANI)
-
-```
-
-
-```{r}
-y <- c(lparagasseri4ANI, lparagasseri6ANI, lparagasseri7ANI, lparagasseri15ANI, lparagasseri17ANI, lparagasseri23ANI, lparagasseri27ANI, lparagasseri28ANI, lparagasseri3513_31ANI, lparagasseri3559_31ANI, lparagasseri32ANI, lparagasseri33ANI, lparagasseri34ANI, lparagasseri50ANI, lparagasseri51ANI, lparagasseri52ANI, lparagasseri55ANI, lparagasseri57ANI)
-
-strain <- rep(c("lparagasseri4", "lparagasseri6", "lparagasseri7", "lparagasseri15", "lparagasseri17", "lparagasseri23", "lparagasseri27", "lparagasseri28", "lparagasseri3513_31", "lparagasseri3559_31", "lparagasseri32", "lparagasseri33", "lparagasseri34", "lparagasseri50", "lparagasseri51", "lparagasseri52","lparagasseri55", "lparagasseri57"), each = 25)
+# Create strain vector
+strains <- rep(c("lgasseri10", "lgasseri53", "lgasseri54", "lgasseri56"), each = 25)
 
 l <- lm(y~strain)
 
@@ -138,28 +55,6 @@ library(agricolae)
 an.m<-aov(y~strain)
 l<- LSD.test(an.m,"strain",p.adj = "bonferroni")
 l
-
-# $groups
-#                            y groups
-# lparagasseri17      99.99574      a
-# lparagasseri3559_31 99.99317      a
-# lparagasseri15      99.99157      a
-# lparagasseri57      99.95034      b
-# lparagasseri23      99.95025      b
-# lparagasseri55      99.93169     bc
-# lparagasseri52      99.92167    bcd
-# lparagasseri28      99.89817     cd
-# lparagasseri51      99.89322    cde
-# lparagasseri34      99.88380    def
-# lparagasseri33      99.85481    efg
-# lparagasseri32      99.85278     fg
-# lparagasseri3513_31 99.83124      g
-# lparagasseri6       99.82949      g
-# lparagasseri27      99.79018      h
-# lparagasseri50      99.78134      h
-# lparagasseri4       99.66830      i
-# lparagasseri7       99.64368      i
-
 ```
 
 
@@ -171,11 +66,6 @@ d<-density(boot) #kernel density estimation
 library(ggplot2)
 library(dplyr)
 df<-data.frame(boot)
-# df%>%
-#   ggplot( aes(x=boot)) +
-#   geom_density(fill="#69b3a2", color="#e9ecef", alpha=0.8)+
-#   ggtitle("Density plot of ANI value for Lcrispatus") + xlab("ANI values(bootstrapped)")
-#   theme_ipsum()
 ```
 
 ```{r}
@@ -184,7 +74,8 @@ testANI <- read.table(pipe("pbpaste"), sep="\t", header = TRUE)
 
 testANI$strain_loc1 <- paste(testANI$X, testANI$X.1)
 
-testANI <- testANI %>% select(strain_loc1, X3329_50, X3329_51, X3329_52, X3329_55, X3329_57, X3513_23, X3513_27, X3513_28, X3513_31, X3513_32, X3513_33, X3513_34, X3559_15, X3559_17, X3559_31, X4892_3209_4, X4898_3209_7, X4933_3209_6)
+testANI <- testANI %>% select(#need to select specific strains
+)
 
 columns = paste(names(testANI),as.matrix(testANI[1,]))
 colnames(testANI) = columns
@@ -193,82 +84,12 @@ testANI <- testANI[-1, ]
 colnames(testANI)[1] ="strain_loc1"
 
 testANI <- testANI %>% pivot_longer(-strain_loc1, names_to = "strain_loc2", values_to = "ANI")
-#calculates out emperical distribution probability looking to the left of the value
+
 testANI$ANI <- as.numeric(testANI$ANI)
 emp<-rep(0,nrow(testANI))
 for(i in 1:nrow(testANI))
   {emp[i]<-pemp(testANI$ANI[i],boot, prob.method = "emp.probs")}
 t<-cbind(testANI,emp)
 
-library(writexl)
-write_xlsx(t, "/Users/leahboger/Desktop/LactoANI_output/Lparagasseri_emp.xlsx")
-
-# write.csv(t,"/Users/leahboger/Desktop/Lparagasseri_ANI/Lparagasserii_emp.csv")
-
-# t <- read.csv("/Users/leahboger/Desktop/Lparagasseri_ANI/Lparagasserii_emp.csv")
-# View(t)
-
-#3329_51 LP2 X3513_32 LP2 99.9976 0.948238794
-#3329_50 LP1 X3329_51 LP2 98.4495 0.001012475
-
-library(ggbreak)
-library(ggplot2)
-library(hrbrthemes)
-
-p <- df %>% ggplot(aes(x= boot)) + geom_density(fill = "darksalmon", color = "#e9ecef") +
-  geom_vline(xintercept = 99.9976, color = "blue", linewidth = 1)+
-  annotate("text", x= 99.7, y=2.1, label="3329_51 LP2 vs 513_32 LP2", color = "darkblue")+
-  geom_vline(xintercept = 98.4495, color = "red", linewidth = 1)+
-  annotate("text", x= 98.74, y=2.65, label="3329_50 LP1 vs 3329_51 LP2", color = "darkred")+
-  ggtitle("Density plot of ANI values for Lparagasseri") + xlab("ANI values(bootstrapped)")+
-  ylab("Density")
-
-
-# annotate("text", x= 99.95, y=2, label="3329_51 LP2 vs 513_32 LP2", angle=90)+
-
-
-```
-
-```{r}
-t <- read.csv("/Users/leahboger/Desktop/Lparagasseri_emp.csv") %>% select(strain_loc1, strain_loc2, ANI, emp)
-library(ggbreak)
-library(plotrix)
-library(RColorBrewer)
-brewer.pal(n = 6, name = "Dark2")
-cols <- c("LP1"="#1B9E77","LP2"="#D95F02","LP3"="#7570B3", "LP4"="#E7298A","LP5"="#66A61E", "LP6"="#E6AB02")
-
-g <- df %>% ggplot(aes(x= boot)) + geom_density(fill = "darkgrey", color = "black")+
-  geom_vline(aes(xintercept = 99.9992, color = "LP3"), linewidth = 1)+
-  geom_vline(aes(xintercept = 99.9989, color = "LP2"), linewidth = 1)+
-  geom_vline(aes(xintercept = 99.9985, color = "LP2"), linewidth = 1)+
-  geom_vline(aes(xintercept = 99.9985, color = "LP2"), linewidth = 1)+
-  geom_vline(aes(xintercept = 99.9984, color = "LP2"), linewidth = 1)+
-  geom_vline(aes(xintercept = 99.9984, color = "LP2"), linewidth = 1)+
-  geom_vline(aes(xintercept = 99.9983, color = "LP2"), linewidth = 1)+
-  geom_vline(aes(xintercept = 99.9983, color = "LP2"), linewidth = 1)+
-  geom_vline(aes(xintercept = 99.9981, color = "LP2"), linewidth = 1)+
-  geom_vline(aes(xintercept = 99.9981, color = "LP2"), linewidth = 1)+
-  geom_vline(aes(xintercept = 99.9981, color = "LP2"), linewidth = 1)+
-  geom_vline(aes(xintercept = 99.9979, color = "LP1"), linewidth = 1)+
-  geom_vline(aes(xintercept = 99.9976, color = "LP2"), linewidth = 1)+
-  geom_vline(aes(xintercept = 99.9976, color = "LP2"), linewidth = 1)+
-  geom_vline(aes(xintercept = 99.9976, color = "LP2"), linewidth = 1)+
-  geom_vline(aes(xintercept = 99.9974, color = "LP1"), linewidth = 1)+
-  geom_vline(aes(xintercept = 99.9973, color = "LP2"), linewidth = 1)+
-  geom_vline(aes(xintercept = 99.9972, color = "LP4"), linewidth = 1)+
-  geom_vline(aes(xintercept = 99.9970, color = "LP2"), linewidth = 1)+
-  geom_vline(aes(xintercept = 99.9946, color = "LP1"), linewidth = 1)+
-  geom_vline(aes(xintercept = 99.9912, color = "LP6"), linewidth = 1)+
-  geom_vline(aes(xintercept = 98.1906, color = "LP5"), linewidth = 1)+
-  geom_vline(aes(xintercept = 98.4349, color = "LP3"), linewidth = 1)+
-  geom_vline(aes(xintercept = 98.4588, color = "LP3"), linewidth = 1)+
-  ggtitle("Density plot of ANI values for Lparagasseri") + xlab("ANI values(bootstrapped)")+ ylab("Density")+
-  scale_color_manual(name = "Patients", values = cols)
-
-
-g + theme_bw()
-
-#scale_x_break(c(98.5, 99.3))+
-```
-
-
+#from here onwards we need to plot all the results
+#for plots we will need to write out p val then pull back in to generate output for ggplot
