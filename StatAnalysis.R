@@ -15,11 +15,14 @@ install.packages("tidyverse")
 install.packages("readr")
 library("readr")
 
-# Define directory path
-ani_directory <- "/Users/leahboger/Desktop/Lgasseri_ANI/"
+#set path to .tsv file containing fastANI results
+ani_file <- "/path/to/your/fastani_output.tsv"
 
-# Define filenames (Still working out how we can implement this aspect into python)
-file_names <- c(""))
+# Read the ANI file directly
+ani <- readr::read_tsv(ani_file, col_names = FALSE)
+
+# Extract the ANI values from the first column
+ani_values <- data.frame(ani[, 1])
 
 # Read and process ANI files
 ani_data <- list()
