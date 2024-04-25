@@ -23,7 +23,7 @@ python download_accessions.py
 ### Steps: 
 Once the raw fastq files are found in the directory, o run all python scripts with one line of command, you can run the automatedPartOne.sh bash script. This will call on the many python scripts we have created in order. Running this takes approximately 25 minutes. A description of each python file can be found below
 ```
-./automatedPartOne.sh
+python automatePartOne.py
 ``` 
 
 **subsample.py** : Run this script to perform the subsampling. The input includes whatever fastq files are found in current directory. Output includes a folder called subsampling_output that contains the forward and reverse subsamples created from the oiriginal fastq files in the following format: Sample1_sub1_F.fastq & Sample1_sub1_R.fastq, Sample1_sub2_F.fastq & Sample1_sub2_R.fastq, etc up to however many subsamples were defined in the script: SampleN_subN_F.fastq & SampleN_subN_R.fastq. The number of subsamples can be changed in Line 46: randomList = random.sample(range(0, number_reads), 5) where 5 can be changed to however many subsamples the user desires. 
@@ -38,6 +38,7 @@ Once the raw fastq files are found in the directory, o run all python scripts wi
 
 **filter_tsv_file.py** : The tsv file created from fastAni needs some filtering as it includes entries that a) were comparisons between the same subsample yielding a result of 100, b)were comparisons between different strains. Therefore we want to make 3 different tsv files from the original tsv file. One tsv for SampleA only, one for SampleB only, and one for the comparisons between A and B. The output includes the tsv file for sampleA (SRR26772099.tsv), sampleB(SRR26772116.tsv) and between samples (mixed.tsv) 
 
+The outputs SRR26772099.tsv, SRR26772116.tsv and mixed.tsv are used as input for PART TWO: R COMPONENT
 ## PART TWO: R COMPONENT
 
 ### StatAnalysisTentative.R
