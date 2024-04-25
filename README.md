@@ -19,6 +19,11 @@ b) download_accessions.py : This script automates the retrieval of sequencing da
 Once the raw fastq files are found in the directory, follow these steps: 
 
 **1. subsample.py** : Run this script to perform the subsampling. The input includes whatever fastq files are found in current directory. Output includes a folder called subsampling_output that contains the forward and reverse subsamples created from the oiriginal fastq files in the following format: Sample1_sub1_F.fastq & Sample1_sub1_R.fastq, Sample1_sub2_F.fastq & Sample1_sub2_R.fastq, etc up to however many subsamples were defined in the script: SampleN_subN_F.fastq & SampleN_subN_R.fastq
+```
+function test() {
+  console.log("This code will have a copy button to the right of it");
+}
+```
 
 **2. spades.py** : Run this script to perform the spades assembly of the subsamples. The input includes all of the subsample pairs found in the /subsampling_output directory. Output includes a new folder /spades_assembly/subsampling_output which contains a folder for each subsample pair including the contigs.fasta needed for following step as well as other spades.output not used in this pipeline but available for extra information or debugging. 
 
