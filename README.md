@@ -34,7 +34,7 @@ python automatePartOne.py
 
 **fastAni.py** : Run this script to perform a ANI comparison between all samples and subsamples' contig files. Input includes the contigs_paths.txt file created by step 3. Output includes the pairwise ANI comparison is a fastani_output file 
 
-**rename_tsv_columns.sh** : run this script to achieve two goals. First, it takes the fastani_output file and turns it into a tsv file. Second, it filters the column names deleting the paths of the files used to create the ANI comparison, leaving only the subsample name, which makes it mroe readable for future visualization. 
+**rename_tsv_columns.py** : run this script to achieve two goals. First, it takes the fastani_output file and turns it into a tsv file. Second, it filters the column names deleting the paths of the files used to create the ANI comparison, leaving only the subsample name, which makes it mroe readable for future visualization. 
 
 **filter_tsv_file.py** : The tsv file created from fastAni needs some filtering as it includes entries that a) were comparisons between the same subsample yielding a result of 100, b)were comparisons between different strains. Therefore we want to make 3 different tsv files from the original tsv file. One tsv for SampleA only, one for SampleB only, and one for the comparisons between A and B. The output includes the tsv file for sampleA (SRR26772099.tsv), sampleB(SRR26772116.tsv) and between samples (mixed.tsv) 
 
