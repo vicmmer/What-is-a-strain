@@ -40,7 +40,7 @@ python getFilePaths.py
 python fastAni.py
 ```
 
-**5. rename_tsv_columns.sh** : run this script to achieve two goals. First, it takes the fastani_output file anf turns it into a tsv file. Second, it filters the column names deleting the paths of the files used to create the ANI comparison, leaving only the subsample name, which makes it mroe readable for future visualization. 
+**5. rename_tsv_columns.sh** : run this script to achieve two goals. First, it takes the fastani_output file and turns it into a tsv file. Second, it filters the column names deleting the paths of the files used to create the ANI comparison, leaving only the subsample name, which makes it mroe readable for future visualization. 
 ```
 ./rename_tsv_columns.sh
 ```
