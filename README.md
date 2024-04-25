@@ -18,10 +18,15 @@ b) download_accessions.py : This script automates the retrieval of sequencing da
 ### Steps: 
 Once the raw fastq files are found in the directory, follow these steps: 
 **1. subsample.py** : Run this script to perform the subsampling. The input includes whatever fastq files are found in current directory. Output includes a folder called subsampling_output that contains the forward and reverse subsamples created from the oiriginal fastq files in the following format: Sample1_sub1_F.fastq & Sample1_sub1_R.fastq, Sample1_sub2_F.fastq & Sample1_sub2_R.fastq, etc up to however many subsamples were defined in the script: SampleN_subN_F.fastq & SampleN_subN_R.fastq
+
 **2. spades.py** : Run this script to perform the spades assembly of the subsamples. The input includes all of the subsample pairs found in the /subsampling_output directory. Output includes a new folder /spades_assembly/subsampling_output which contains a folder for each subsample pair including the contigs.fasta needed for following step as well as other spades.output not used in this pipeline but available for extra information or debugging. 
+
 **3. getFilePaths.py** : Run this script to get the complete path for all of the subsamples' contigs.fasta files which we will use for the ANI calculation. Output includes a contigs_paths.txt in the main directory that contains this information. 
+
 **4. fastAni.py** : Run this script to perform a ANI comparison between all samples and subsamples' contig files. Input includes the contigs_paths.txt file created by step 3. Output includes the pairwise ANI comparison is a fastani_output file 
+
 **5. rename_tsv_columns.sh** : run this script with ./rename_tsv_columns.sh to achieve two goals. First, it takes the fastani_output file anf turns it into a tsv file. Second, it filters the column names deleting the paths of the files used to create the ANI comparison, leaving only the subsample name, which makes it mroe readable for future visualization. 
+
 **6. filter_tsv_file.py** : The tsv file created from fastAni needs some filtering as it includes entries that a) were comparisons between the same subsample yielding a result of 100, b)were comparisons between different strains. Therefore we want to make 3 different tsv files from the original tsv file. One tsv for SampleA only, one for SampleB only, and one for the comparisons between A and B. The output includes the tsv file for sampleA (SRR26772099.tsv), sampleB(SRR26772116.tsv) and between samples (mixed.tsv) 
 
 
