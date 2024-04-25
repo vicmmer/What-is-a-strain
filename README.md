@@ -11,6 +11,7 @@ The pipeline is broken into two parts:
 ## PART ONE: PYTHON COMPONENT
 Disclaimer: for the sake of quick processing for Dr. Wheeler, the number of subsamples used for this code are 5. Although we have had success with 50 subsamples/sample. 
 
+
 ### accessionList.txt and download_accessions.py
 This step is optional. These two scripts are used in tandem if user doesnt already have data (fastq files) downloaded unto the directory. 
 a) accessionList.txt: This list will contain the SRA accession number of the samples to be downloaded from NCBI, unless already provided by the user. 
@@ -18,38 +19,24 @@ b) download_accessions.py : This script automates the retrieval of sequencing da
 ```
 python download_accessions.py
 ```
+
 ### Steps: 
-Once the raw fastq files are found in the directory, follow these steps: 
+Once the raw fastq files are found in the directory, o run all python scripts with one line of command, you can run the automatedPartOne.sh bash script. This will call on the many python scripts we have created in order. A description of each python file can be found below: 
+```
+./automatedPartOne.sh
+``` 
 
-**1. subsample.py** : Run this script to perform the subsampling. The input includes whatever fastq files are found in current directory. Output includes a folder called subsampling_output that contains the forward and reverse subsamples created from the oiriginal fastq files in the following format: Sample1_sub1_F.fastq & Sample1_sub1_R.fastq, Sample1_sub2_F.fastq & Sample1_sub2_R.fastq, etc up to however many subsamples were defined in the script: SampleN_subN_F.fastq & SampleN_subN_R.fastq. The number of subsamples can be changed in Line 46: randomList = random.sample(range(0, number_reads), 5) where 5 can be changed to however many subsamples the user desires. 
-```
-python subsample.py
-```
+**subsample.py** : Run this script to perform the subsampling. The input includes whatever fastq files are found in current directory. Output includes a folder called subsampling_output that contains the forward and reverse subsamples created from the oiriginal fastq files in the following format: Sample1_sub1_F.fastq & Sample1_sub1_R.fastq, Sample1_sub2_F.fastq & Sample1_sub2_R.fastq, etc up to however many subsamples were defined in the script: SampleN_subN_F.fastq & SampleN_subN_R.fastq. The number of subsamples can be changed in Line 46: randomList = random.sample(range(0, number_reads), 5) where 5 can be changed to however many subsamples the user desires. 
 
-**2. spades.py** : Run this script to perform the spades assembly of the subsamples. The input includes all of the subsample pairs found in the /subsampling_output directory. Output includes a new folder /spades_assembly/subsampling_output which contains a folder for each subsample pair including the contigs.fasta needed for following step as well as other spades.output not used in this pipeline but available for extra information or debugging. 
-```
-python spades.py
-```
+**spades.py** : Run this script to perform the spades assembly of the subsamples. The input includes all of the subsample pairs found in the /subsampling_output directory. Output includes a new folder /spades_assembly/subsampling_output which contains a folder for each subsample pair including the contigs.fasta needed for following step as well as other spades.output not used in this pipeline but available for extra information or debugging. 
 
-**3. getFilePaths.py** : Run this script to get the complete path for all of the subsamples' contigs.fasta files which we will use for the ANI calculation. Output includes a contigs_paths.txt in the main directory that contains this information. 
-```
-python getFilePaths.py
-```
+**getFilePaths.py** : Run this script to get the complete path for all of the subsamples' contigs.fasta files which we will use for the ANI calculation. Output includes a contigs_paths.txt in the main directory that contains this information. 
 
-**4. fastAni.py** : Run this script to perform a ANI comparison between all samples and subsamples' contig files. Input includes the contigs_paths.txt file created by step 3. Output includes the pairwise ANI comparison is a fastani_output file 
-```
-python fastAni.py
-```
+**fastAni.py** : Run this script to perform a ANI comparison between all samples and subsamples' contig files. Input includes the contigs_paths.txt file created by step 3. Output includes the pairwise ANI comparison is a fastani_output file 
 
-**5. rename_tsv_columns.sh** : run this script to achieve two goals. First, it takes the fastani_output file and turns it into a tsv file. Second, it filters the column names deleting the paths of the files used to create the ANI comparison, leaving only the subsample name, which makes it mroe readable for future visualization. 
-```
-./rename_tsv_columns.sh
-```
+**rename_tsv_columns.sh** : run this script to achieve two goals. First, it takes the fastani_output file and turns it into a tsv file. Second, it filters the column names deleting the paths of the files used to create the ANI comparison, leaving only the subsample name, which makes it mroe readable for future visualization. 
 
-**6. filter_tsv_file.py** : The tsv file created from fastAni needs some filtering as it includes entries that a) were comparisons between the same subsample yielding a result of 100, b)were comparisons between different strains. Therefore we want to make 3 different tsv files from the original tsv file. One tsv for SampleA only, one for SampleB only, and one for the comparisons between A and B. The output includes the tsv file for sampleA (SRR26772099.tsv), sampleB(SRR26772116.tsv) and between samples (mixed.tsv) 
-```
-python filter_tsv_file.py
-```
+**filter_tsv_file.py** : The tsv file created from fastAni needs some filtering as it includes entries that a) were comparisons between the same subsample yielding a result of 100, b)were comparisons between different strains. Therefore we want to make 3 different tsv files from the original tsv file. One tsv for SampleA only, one for SampleB only, and one for the comparisons between A and B. The output includes the tsv file for sampleA (SRR26772099.tsv), sampleB(SRR26772116.tsv) and between samples (mixed.tsv) 
 
 ## PART TWO: R COMPONENT
 
