@@ -14,7 +14,9 @@ The pipeline is broken into two parts:
 This step is optional. These two scripts are used in tandem if user doesnt already have data (fastq files) downloaded unto the directory. 
 a) accessionList.txt: This list will contain the SRA accession number of the samples to be downloaded from NCBI, unless already provided by the user. 
 b) download_accessions.py : This script automates the retrieval of sequencing data from the NCBI Sequence Read Archive (SRA) by running the fastq-dump command for each accession number listed in the accessionList.txt file, splitting the resulting files into forward and reverse reads if available.
-
+```
+python download_accessions.py
+```
 ### Steps: 
 Once the raw fastq files are found in the directory, follow these steps: 
 
