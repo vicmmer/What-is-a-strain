@@ -21,7 +21,7 @@ python download_accessions.py
 ```
 
 ### Steps: 
-Once the raw fastq files are found in the directory, o run all python scripts with one line of command, you can run the automatedPartOne.sh bash script. This will call on the many python scripts we have created in order. A description of each python file can be found below: 
+Once the raw fastq files are found in the directory, o run all python scripts with one line of command, you can run the automatedPartOne.sh bash script. This will call on the many python scripts we have created in order. Running this takes approximately 25 minutes. A description of each python file can be found below
 ```
 ./automatedPartOne.sh
 ``` 
