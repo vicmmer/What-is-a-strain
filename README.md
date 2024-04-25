@@ -12,23 +12,26 @@ The pipeline is broken into two parts:
 
 ### accessionList.txt and download_accessions.py
 This step is optional. These two scripts are used in tandem if user doesnt already have data (fastq files) downloaded unto the directory. 
-This list will contain the SRA accession number of the samples to be downloaded from NCBI, unless already provided by the user. 
+a) accessionList.txt: This list will contain the SRA accession number of the samples to be downloaded from NCBI, unless already provided by the user. 
+b) download_accessions.py : This script automates the retrieval of sequencing data from the NCBI Sequence Read Archive (SRA) by running the fastq-dump command for each accession number listed in the accessionList.txt file, splitting the resulting files into forward and reverse reads if available.
 
-### download_accessions.py 
-This script automates the retrieval of sequencing data from the NCBI Sequence Read Archive (SRA) by running the fastq-dump command for each accession number listed in the accessionList.txt file, splitting the resulting files into forward and reverse reads if available.
+### Steps: 
+Once the raw fastq files are found in the directory, follow these steps: 
+**1. subsample.py** : Run this script to perform the subsampling. The input includes whatever fastq files are found in current directory. Output includes a folder called subsampling_output that contains the forward and reverse subsamples created from the oiriginal fastq files in the following format: Sample1_sub1_F.fastq & Sample1_sub1_R.fastq, Sample1_sub2_F.fastq & Sample1_sub2_R.fastq, etc up to however many subsamples were defined in the script: SampleN_subN_F.fastq & SampleN_subN_R.fastq
+**2. spades.py** : Run this script to perform the spades assembly of the subsamples. The input includes all of the subsample pairs found in the /subsampling_output directory. Output includes a new folder /spades_assembly/subsampling_output which contains a folder for each subsample pair including the contigs.fasta needed for following step as well as other spades.output not used in this pipeline but available for extra information or debugging. 
+**3. getFilePaths.py** : Run this script to get the complete path for all of the subsamples' contigs.fasta files which we will use for the ANI calculation. Output includes a contigs_paths.txt in the main directory that contains this information. 
+**4. fastAni.py** : Run this script to perform a ANI comparison between all samples and subsamples' contig files. Input includes the contigs_paths.txt file created by step 3. Output includes the pairwise ANI comparison is a fastani_output file 
+**5. rename_tsv_columns.sh** : run this script with ./rename_tsv_columns.sh to achieve two goals. First, it takes the fastani_output file anf turns it into a tsv file. Second, it filters the column names deleting the paths of the files used to create the ANI comparison, leaving only the subsample name, which makes it mroe readable for future visualization. 
+**6. filter_tsv_file.py** : The tsv file created from fastAni needs some filtering as it includes entries that a) were comparisons between the same subsample yielding a result of 100, b)were comparisons between different strains. Therefore we want to make 3 different tsv files from the original tsv file. One tsv for SampleA only, one for SampleB only, and one for the comparisons between A and B. The output includes the tsv file for sampleA (SRR26772099.tsv), sampleB(SRR26772116.tsv) and between samples (mixed.tsv) 
 
 
-### spades.py 
-This script performs genome assembly using SPAdes for paired-end reads in FASTQ format. It iterates over each sample pair, counting read pairs before and after filtering, and logs this information. Afterwards,  it executes the filtering process for each sample dynamically by traversing through the spades_assembly folder and its subdirectories, and filtering out contigs shorter than 1,000 bp long, creating a new file within each subdirectory called "filtered_contigs.fasta" which will be used for further processing.
-
-### subsample_plus_assembly.py
-This script automates the process of subsampling paired-end FASTQ files, which are commonly used in next-generation sequencing data analysis. The script begins by locating the input FASTQ files and specifying an output directory for the subsampled files. It then iterates through pairs of input files and calculates the number of reads in the first file. Using random sampling, it selects 50 random indices within the range of reads in the first file. This number of subsamples can be adjusted by the user based on their needs. For each index, it extracts a subset of reads from both files in the pair using the seqtk sample command and writes these subsampled reads to new files in the output directory. This process is repeated for each pair of input files, providing a convenient and automated way to generate subsampled datasets for downstream analysis or testing purposes. Following subsampling, SPAdes was used as a genome assembler to reconstruct genomic sequences from the subsampled reads, this captured the variability in the dataset and produced contigs.fasta files which later underwent filtering to remove contigs longer than 1000 base pairs. 
+## R COMPONENT: 
 
 ### StatAnalysisTentative.R
 This R script focuses on analyzing Average Nucelotide Identity (ANI) data from a Lactobacillus gasseri bacterial species. The script starts by installing the necessary R packages for data manipulation and visualization. It defines a directory and reads multiple TSV files containing ANI data from that directory. The script then performs various statistical tests to analyze the data and these include, ANOVA, Shapiro-Wilk test for normality, Bartlett's test for homogeneity of variances, Kruskal-Wallis test, and Tukey's Honest Signiifcance Difference test to explore differences between bacterial strains. Additionally, it implements bootstrapping method to sample the data for further density estimation. The script also includes a permutation test to compare empirical data against the bootstrapped samples to validate the model and it concludes with generating a density plot of the ANI values using ggplot2 visually representing the statistical distribution and indicating signiifcant thresholds with vertical lines.
 
 
-#test test
+
 
 
 
