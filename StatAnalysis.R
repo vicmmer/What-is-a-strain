@@ -24,8 +24,10 @@ library(ggplot2)
 
 #statistical analysis of the MIXED.tsv file generated, do before#
 
-# Read the mixed TSV file in
+# Read in all your TSV files
 file_path_mixed <- "/cloud/project/mixed.tsv"  # Replace with your actual file path
+file_path_strain1 <- "/cloud/project/SRR26772099.tsv" # Replace with your actual file path
+file_path_strain2 <- "/cloud/project/SRR26772116.tsv" # Replace with your actual file path
 
 ani_data1 <- read_tsv(file_path_mixed, col_names = FALSE)
 
