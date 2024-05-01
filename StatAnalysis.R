@@ -1,5 +1,5 @@
 #COMP 383 
-#Independent project
+#Independent project: What is a Strain? Short Read Group
 #Victoria, Adriana, Anmol, Ali
 
 '''
@@ -9,97 +9,95 @@ ANI analysis and the fragmentation. Utilizing this string (and others like it)
 we will compile them as a data frame and compare the dataframes to measure their
 differences with one another (we want as low a p-value as possible to preserve
 the diversity of our dataset)
+
+Please refer to the github for specific direction regarding all steps prior to 
+this stage that will allow you to generate a total of three (3) tsv files.
+One labled mixed.tsv, and then two others corresponding to each strain and 
+labelled by the SRA accession number. For the statistical test portion of this
+analysis, the mixed.tsv file will be utilized.
 '''
 #begin implementation by importing/library-ing all necessary packages 
-install.packages("tidyverse")
-install.packages("readr")
-library("readr")
 
-#set path to .tsv file containing fastANI results
-ani_file <- "/path/to/your/fastani_output.tsv"
-
-# Read the ANI file directly
-ani <- readr::read_tsv(ani_file, col_names = FALSE)
-
-# Extract the ANI values from the first column
-ani_values <- data.frame(ani[, 1])
-
-# Read and process ANI files
-ani_data <- list()
-for (file_name in file_names) {
-  file_path <- paste0(ani_directory, file_name)
-  ani <- readr::read_tsv(file_path, col_names = FALSE)
-  ani_data[[file_name]] <- data.frame(ani[, 3])
-}
-
-# Calculate lengths of ANI vectors
-ani_lengths <- sapply(ani_data, length)
-
-# Combine ANI vectors into a single vector
-y <- unlist(ani_data)
-
-# Create strain vector
-strains <- rep(c("lgasseri10", "lgasseri53", "lgasseri54", "lgasseri56"), each = 25)
-
-# Perform linear regression
-l <- lm(y ~ strains)
-
-# Perform ANOVA
-anova_result <- anova(l)
-
-# Perform Shapiro-Wilk test
-shapiro_result <- shapiro.test(l$residuals)
-
-# Perform Bartlett's test
-bartlett_result <- bartlett.test(l$residuals, strains)
-
-# Perform Kruskal-Wallis test
-kruskal_result <- kruskal.test(y ~ strains)
-
-# Perform Tukey's HSD test
-tukey_result <- TukeyHSD(aov(y ~ strains), conf.level = 0.95)
-
-# Bootstrap
-boot <- sample(y, size = 10000, replace = TRUE)
-d <- density(boot)
-
-# Read EMP data
-testANI <- read.table(pipe("pbpaste"), sep = "\t", header = TRUE)
-
-# Rename columns
-testANI$strain_loc1 <- paste(testANI$X, testANI$X.1)
-testANI <- testANI %>% select(strain_loc1, X3329_53, X3329_54, X3329_56, X3513_21, X3559_10, X3559_9)
-columns <- paste(names(testANI), as.matrix(testANI[1, ]))
-colnames(testANI) <- columns
-testANI <- testANI[-1, ]
-colnames(testANI)[1] <- "strain_loc1"
-testANI <- testANI %>% pivot_longer(-strain_loc1, names_to = "strain_loc2", values_to = "ANI")
-testANI$ANI <- as.numeric(testANI$ANI)
-
-# Perform permutation test
-emp <- rep(0, nrow(testANI))
-for (i in 1:nrow(testANI)) {
-  emp[i] <- pemp(testANI$ANI[i], boot, discrete = FALSE)
-}
-t <- cbind(testANI, emp)
-write.csv(t, file = paste0(ani_directory, "Lgasseri_emp.csv"))
-
-# Read EMP data again
-t <- read.csv(paste0(ani_directory, "Lgasseri_emp.csv")) %>% select(strain_loc1, strain_loc2, ANI, emp)
-
-# Plot density
-library(RColorBrewer)
-library(ggplot2)
+library(readr)
 library(dplyr)
+library(ggplot2)
 
-cols <- c("LG1" = "#1B9E77", "LG3" = "#D95F02")
-g <- df %>% ggplot(aes(x = boot)) + geom_density(fill = "darkgrey", color = "black") +
-  geom_vline(aes(xintercept = 99.9985, color = "LG1"), linewidth = 1) +
-  geom_vline(aes(xintercept = 99.9990, color = "LG1"), linewidth = 1) +
-  geom_vline(aes(xintercept = 99.9995, color = "LG1"), linewidth = 1) +
-  geom_vline(aes(xintercept = 99.9986, color = "LG3"), linewidth = 1) +
-  geom_vline(aes(xintercept = 99.9986, color = "LG3"), linewidth = 1) +
-  ggtitle("Density plot of ANI values for Lgasseri") + xlab("ANI values(bootstrapped)") + ylab("Density") +
-  scale_color_manual(name = "Patients", values = cols)
+#statistical analysis of the MIXED.tsv file generated, do before#
 
-g + theme_bw()
+# Read the mixed TSV file in
+file_path_mixed <- "/cloud/project/mixed.tsv"  # Replace with your actual file path
+
+ani_data1 <- read_tsv(file_path_mixed, col_names = FALSE)
+
+#Convert X1 and X2 to factors
+ani_data$X1 <- factor(ani_data$X1)
+ani_data$X2 <- factor(ani_data$X2)
+
+# Run linear regression
+l <- lm(ani_data1$X3 ~ ani_data1$X2)
+
+# Perform ANOVA on residuals
+anova_resid <- anova(l)
+p_value_anova_resid <- anova_resid$"Pr(>F)"[1]
+print(p_value_anova_resid)
+
+# Shapiro-Wilk test on residuals
+shapiro_resid <- shapiro.test(l$residuals)
+p_value_shapiro_resid <- shapiro_resid$p.value
+print(p_value_shapiro_resid)
+
+# Bartlett's test comparing residuals to factor
+bartlett_resid_factor <-  bartlett.test(l$resid, ani_data1$X2)
+p_value_bartlett <- bartlett_resid_factor$p.value
+print(p_value_bartlett)
+
+# Kruskal-Wallis test comparing ANI values to factor variable
+kruskal_test_result <- kruskal.test(ani_data1$X3 ~ ani_data1$X2)
+p_value_kruskal <- kruskal_test_result$p.value
+print(p_value_kruskal)
+
+###########
+##Boot-strapped analysis to generate density plots##
+# Read the two strain TSV files (the mixed.tsv file has already been read)
+# Set file path to your respective working directory containing your files
+
+file_path_strain1 <- "/cloud/project/SRR26772099.tsv" # Replace with your actual file path
+file_path_strain2 <- "/cloud/project/SRR26772116.tsv" # Replace with your actual file path
+
+ani_data1 <- read_tsv(file_path_mixed, col_names = FALSE)
+ani_data2 <- read_tsv(file_path_strain1, col_names = FALSE)
+ani_data3 <- read_tsv(file_path_strain2, col_names = FALSE)
+
+# Combine ANI values into a single vector
+ani_values <- c(ani_data2$X3, ani_data3$X3)
+
+# Bootstrap resampling
+bootstrapped_ani <- replicate(10000, sample(ani_values, replace = TRUE))
+
+# Convert bootstrapped_ani matrix to a data frame
+boot_df <- as.data.frame(bootstrapped_ani)
+
+# Melt the data frame to long format for ggplot
+boot_df_long <- reshape2::melt(boot_df)
+
+# Plot density of bootstrapped ANI values
+ggplot(boot_df_long, aes(x = value)) +
+  geom_density(fill = "gray", alpha = 0.5) +
+  labs(title = "Density Plot of Bootstrapped ANI Values", x = "ANI Values", y = "Density") +
+  theme_minimal()
+
+#Raw non-bootstrapped analysis, use only to compare strain ANI similarities rudimentarily###
+
+# Combine the ANI values into a single dataset
+ani_values <- bind_rows(
+  data.frame(ANI = ani_data1$X3, Source = "Mixed"),
+  data.frame(ANI = ani_data2$X3, Source = "SRR26772099"),
+  data.frame(ANI = ani_data3$X3, Source = "SRR26772116")
+)
+
+# Plot the density of ANI values
+ggplot(ani_values, aes(x = ANI, fill = Source)) +
+  geom_density(alpha = 0.25) +
+  labs(title = "Density Plot of ANI Values", x = "ANI Values", y = "Density") +
+  theme_minimal()
+
