@@ -10,12 +10,16 @@ The pipeline is broken into two parts:
 The overall step by step instructions on how to perform this analysis goes as follows: 
 **Step 1:**
 Download accessions: run downloadAccessions.py
+
 **Step 2:**
 Run Python script with python automatePartOne.py This will generate the following output: SRR26772099.tsv, SRR26772116.tsv and mixed.tsv
+
 **Step 3:**
 Download these tsv files onto a directory on your computer
+
 **Step 4:**
 Download the StatAnalysis.R to the same directory as the one from Step 3
+
 **Step 5:**
 Run StatAnalysis.R script on R studio, which will take the tsv files as input and use them to create a density function and visuals
 
