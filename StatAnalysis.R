@@ -32,8 +32,8 @@ file_path_strain2 <- "/cloud/project/SRR26772116.tsv" # Replace with your actual
 ani_data1 <- read_tsv(file_path_mixed, col_names = FALSE)
 
 #Convert X1 and X2 to factors
-ani_data$X1 <- factor(ani_data$X1)
-ani_data$X2 <- factor(ani_data$X2)
+ani_data1$X1 <- factor(ani_data1$X1)
+ani_data1$X2 <- factor(ani_data1$X2)
 
 # Run linear regression
 l <- lm(ani_data1$X3 ~ ani_data1$X2)
