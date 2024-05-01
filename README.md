@@ -44,7 +44,8 @@ The outputs SRR26772099.tsv, SRR26772116.tsv and mixed.tsv are used as input for
 ### StatAnalysisTentative.R
 This R script focuses on analyzing Average Nucelotide Identity (ANI) data from a Lactobacillus gasseri bacterial species. The script starts by installing the necessary R packages for data manipulation and visualization. It defines a directory and reads multiple TSV files containing ANI data from that directory. The script then performs various statistical tests to analyze the data and these include, ANOVA, Shapiro-Wilk test for normality, Bartlett's test for homogeneity of variances, Kruskal-Wallis test, and Tukey's Honest Signiifcance Difference test to explore differences between bacterial strains. Additionally, it implements bootstrapping method to sample the data for further density estimation. The script also includes a permutation test to compare empirical data against the bootstrapped samples to validate the model and it concludes with generating a density plot of the ANI values using ggplot2 visually representing the statistical distribution and indicating signiifcant thresholds with vertical lines.
 
-To run it, download the StatAnalysis.R code onto a directory in your computer that also contains the following files: SRR26772099.tsv, SRR26772116.tsv and mixed.tsv  
+To run it, download the StatAnalysis.R code onto a directory in your computer that also contains the following files: SRR26772099.tsv, SRR26772116.tsv and mixed.tsv
+When running the R script, make sure to change the file paths for the tsv files to match where the files are stored in your computer.
 
 
 
